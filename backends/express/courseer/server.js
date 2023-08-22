@@ -4,6 +4,7 @@ const app = xprs();
 const port = 4040;
 
 app.use(xprs.json())
+app.use(xprs.static('public'))
 
 app.get('/', function(rq, rs) {
   let payload = {
