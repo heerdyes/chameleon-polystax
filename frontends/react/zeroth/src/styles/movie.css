@@ -7,3 +7,14 @@ div.mcrud {
     color: darkred;
     border: 1px solid orangered;
 }
+
+table.mgrid {
+    border: 1px solid darkblue;
+    border-collapse: collapse;
+}
+
+table.mgrid > tbody > tr > td {
+    border: 1px solid darkblue;
+    padding: 5px;
+    margin: 5px;
+}

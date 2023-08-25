@@ -57,13 +57,15 @@ export default function MovieCrud() {
 export function MovieGrid({ movies, delh }) {
     return (
         <div>
-            <table>
-                {movies.map(m =>
-                    <tr key={m.id}>
-                        <td>{m.name}</td>
-                        <td>{m.year}</td>
-                        <td><button onClick={() => delh(m.id)}>🗑</button></td>
-                    </tr>)}
+            <table className="mgrid">
+                <tbody>
+                    {movies.map(m =>
+                        <tr key={m.id}>
+                            <td>{m.name}</td>
+                            <td>{m.year}</td>
+                            <td><button onClick={() => delh(m.id)}>🗑</button></td>
+                        </tr>)}
+                </tbody>
             </table>
         </div>
     );
