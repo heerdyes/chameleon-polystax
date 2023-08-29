@@ -3,6 +3,23 @@ import React, { useState } from "react";
 export default function MovieGrid() {
     const [moviename, setMoviename] = useState('');
     const [relyear, setRelyear] = useState('');
+    const [movies, setMovies] = useState([
+        {
+            name: 'Avengers',
+            year: 2005,
+            lang: ['English', 'Kannada', 'Tamil', 'Telugu']
+        },
+        {
+            name: 'RRR',
+            year: 2021,
+            lang: ['English', 'Kannada', 'Tamil', 'Telugu']
+        },
+        {
+            name: 'Interstellar',
+            year: 2017,
+            lang: ['English', 'Kannada', 'Tamil', 'Telugu']
+        }
+    ]);
 
     function updateMName(e) {
         setMoviename(e.target.value);
@@ -14,6 +31,8 @@ export default function MovieGrid() {
 
     function btnclk() {
         console.log(`name: ${moviename}, year: ${relyear}`);
+        setMoviename('');
+        setRelyear('');
     }
 
     return (
@@ -22,10 +41,14 @@ export default function MovieGrid() {
             <input placeholder="releaseyear" onChange={updateMYear} value={relyear}></input>
             <button onClick={btnclk}>add</button>
             <table>
-                <tr>
-                    <td>Tron</td>
-                    <td>1984</td>
-                </tr>
+                {
+                    movies.map(m =>
+                        <tr>
+                            <td>{m.name}</td>
+                            <td>{m.year}</td>
+                        </tr>
+                    )
+                }
             </table>
         </div>
     );
