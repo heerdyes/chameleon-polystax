@@ -7,8 +7,6 @@ export default function app() {
         <div>
             <h1>JSX</h1>
             <MovieGrid></MovieGrid>
-            <MovieGrid></MovieGrid>
-            <MovieGrid></MovieGrid>
         </div>
     );
 }
