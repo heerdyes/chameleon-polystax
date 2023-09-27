@@ -1,30 +1,57 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect
-
-tmpbios = []
-
-def index(request):
-  return HttpResponse('<h3>welcome!</h3><a href="showbios">update bio</a>')
-
-def showbios(request):
-  print(request.headers)
-  biolist = '<ul>'
-  for b in tmpbios:
-    biolist += f'<li>{b}</li>'
-  biolist += '</ul>'
-  biodiv = f'<div> {biolist} </div>'
-  biotext = f'<textarea id="biotext" name="biotext" rows=8 cols=30 placeholder="insert bio here"></textarea>'
-  subbtn = "<input type='submit' value='post'>"
-  bioform = f'<form method="get" action="savebio"> {biotext} {subbtn} </form>'
-  hdng = "<h2>welcome to the showcase!</h2>"
-  phead = '<head><title>showcase</title></head>'
-  pbody = f'<body> {hdng} {biodiv} {bioform} </body>'
-  htmlpage = f'<html> {phead} {pbody} </html>'
-  return HttpResponse(htmlpage)
+from django.http import JsonResponse
+from django.template import loader
+from .models import *
+import json
 
 
-def savebio(request):
-  cbio = request.GET.get('biotext')
-  tmpbios.append(cbio)
-  return redirect('/showcase/showbios')
+def homepage(rq):
+    tmpl = loader.get_template('showcase/index.html')
+    return HttpResponse(tmpl.render({}, rq))
 
+
+def getphones(rq):
+    allphones = Smartphone.objects.all()
+    plst = []
+
+    for phone in allphones:
+        pd = {
+            'brand': phone.brandname,
+            'os': phone.opersys,
+            'price': phone.price
+        }
+        plst.append(pd)
+
+    result = {
+        'phonedata': plst
+    }
+    return JsonResponse(result)
+
+
+def addphone(rq):
+    print('---> adding phone...')
+    phone = json.loads(rq.body)
+    print(phone)
+    p0 = Smartphone(brandname=phone['brand'],
+                    opersys=phone['os'],
+                    price=phone['price'])
+    p0.save()
+    return JsonResponse(phone)
+
+
+def getlaptops(rq):
+    laptops = Laptop.objects.all()
+    plst = []
+
+    for laptop in laptops:
+        pd = {
+            'brand': laptop.brandname,
+            'os': laptop.opersys,
+            'price': laptop.price
+        }
+        plst.append(pd)
+
+    result = {
+        'laptopdata': plst
+    }
+    return JsonResponse(result)
