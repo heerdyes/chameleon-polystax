@@ -16,6 +16,7 @@ def getphones(rq):
 
     for phone in allphones:
         pd = {
+            'id': phone.id,
             'brand': phone.brandname,
             'os': phone.opersys,
             'price': phone.price
@@ -36,7 +37,25 @@ def addphone(rq):
                     opersys=phone['os'],
                     price=phone['price'])
     p0.save()
-    return JsonResponse(phone)
+    p0json = {
+        'id': p0.id,
+        'brand': p0.brandname,
+        'os': p0.opersys,
+        'price': p0.price
+    }
+    return JsonResponse(p0json)
+
+
+def deletephone(rq, phid):
+    rsp = {'success': True, 'error': ''}
+    try:
+        print('phid = ', phid)
+        targetphone = Smartphone.objects.get(id=phid)
+        targetphone.delete()
+    except Smartphone.DoesNotExist as e:
+        print(e)
+        rsp = {'success': False, 'error': str(e)}
+    return JsonResponse(rsp)
 
 
 def getlaptops(rq):
