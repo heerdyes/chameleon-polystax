@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.template import loader
 from .models import *
+from django.core.exceptions import PermissionDenied
 import json
 
 
@@ -30,6 +31,8 @@ def getphones(rq):
 
 
 def addphone(rq):
+    if rq.method != 'POST':
+        raise PermissionDenied()
     print('---> adding phone...')
     phone = json.loads(rq.body)
     print(phone)
@@ -56,6 +59,26 @@ def deletephone(rq, phid):
         print(e)
         rsp = {'success': False, 'error': str(e)}
     return JsonResponse(rsp)
+
+
+def updatephone(rq, phid):
+    if rq.method != 'PUT':
+        raise PermissionDenied
+    try:
+        print('phid = ', phid)
+        phone = json.loads(rq.body)
+        targetphone = Smartphone.objects.get(id=phid)
+        # map json attrs to object attrs
+        targetphone.brandname = phone['brand']
+        targetphone.opersys = phone['os']
+        targetphone.price = phone['price']
+        # do not forget to save it
+        targetphone.save()
+        phone['id'] = targetphone.id
+    except Smartphone.DoesNotExist as e:
+        print(e)
+        return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse(phone)
 
 
 def getlaptops(rq):

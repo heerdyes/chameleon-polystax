@@ -7,4 +7,5 @@ urlpatterns = [
     path('addphone', views.addphone),
     path('getlaptops', views.getlaptops),
     path('deletephone/<int:phid>', views.deletephone),
+    path('updatephone/<int:phid>', views.updatephone),
 ]
